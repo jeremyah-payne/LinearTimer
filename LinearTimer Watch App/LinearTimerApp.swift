@@ -11,7 +11,7 @@ import SwiftUI
 struct LinearTimer_Watch_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(timeValue: 0)
         }
     }
 }
