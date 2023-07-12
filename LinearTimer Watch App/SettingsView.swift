@@ -12,12 +12,14 @@ struct SettingsView: View {
     @AppStorage("startLag") var startLag:String = "5"
     @AppStorage("prefinishTime") var prefinish:String = "15"
     @AppStorage("hideFace") var hideFace:Bool = true
+    @AppStorage("hideFace") var useSound:Bool = true
     
     
     //creating local variables vs the system variables. soon as the systems ones are changed they save. This lets me cancel and only write the locals to the system when the save button is clicked. 
     @State var lcl_startLag:String = "5"
     @State var lcl_prefinish:String = "15"
-    @State var lcl_hideFace:Bool = true
+    @State var lcl_hideFace:Bool = false
+    @State var lcl_useSound:Bool = true
     
     
     @Binding var settingsPresented:Bool
@@ -47,7 +49,7 @@ struct SettingsView: View {
                    
                 Text("Sec")
             }
-            Spacer(minLength:5)
+//            Spacer(minLength:5)
             HStack {
 //                Text("Hide Face")
                 Spacer()
@@ -57,16 +59,27 @@ struct SettingsView: View {
                 
                      }
             Spacer(minLength:15)
+            HStack {
+//                Text("Hide Face")
+                Spacer()
+                Toggle( "Sound", isOn: $lcl_useSound)
+                    .accentColor(.accentColor)
+                Spacer(minLength:50)
+                
+                     }
+            Spacer(minLength:20)
             HStack{
 //                Button("Cancel", action: cancel)
                 Button ("Save", action:save)
+                    
                     .accentColor(.accentColor)
-            }
+            }.frame(maxWidth: 125, maxHeight: 25)
         }//end Vstack
         .onAppear(){
             lcl_startLag = startLag
             lcl_prefinish = prefinish
             lcl_hideFace = hideFace
+            lcl_useSound = useSound
         }
     }//end body
         
@@ -79,6 +92,7 @@ struct SettingsView: View {
         startLag = lcl_startLag
         prefinish = lcl_prefinish
         hideFace = lcl_hideFace
+        useSound = lcl_useSound
         
         settingsPresented = false
     }

@@ -34,6 +34,7 @@ struct RunView: View {
     @AppStorage("startLag") var startLag:String = "5"
     @AppStorage("prefinishTime") var prefinish:String = "15"
     @AppStorage("hideFace") var hideFace:Bool = false
+    @AppStorage("hideFace") var useSound:Bool = false
     
     
     var body: some View {
@@ -57,7 +58,11 @@ struct RunView: View {
                     CurrentLabel = "Starting in... \(lagInt - countDownTime)"
                     if countDownTime == lagInt {
                         // do haptic feedback, I'm thinking of making this a system pref based on beta tester feedback and personal testing. i.e pref = .click || pref = .start then play(pref)
-                        WKInterfaceDevice.current().play(.start)
+                        if(useSound) {
+                            WKInterfaceDevice.current().play(.start)
+                        }else {
+                            WKInterfaceDevice.current().play(.click)
+                        }
                         //check if hideface then set opacity or some var
                         if hideFace {
                             //change opactity
@@ -82,16 +87,24 @@ struct RunView: View {
                         //warn the user with double haptic touch
                         //set the watch face to yellow to warn
                         modeColor = .yellow
-                        
-                        WKInterfaceDevice.current().play(.stop)
+                        if (useSound) {
+                            WKInterfaceDevice.current().play(.stop)
+                        } else {
+                            WKInterfaceDevice.current().play(.click)
+                        }
                     }
                     //if the run time is over the input then we are in the grace period and need to let the user know.
                     if runTime >= inputTime {
                         //set the watch face to yellow to warn
                         buttonOpacity = 100.0
                         modeColor = .red
-                        WKInterfaceDevice.current().play(.stop)
-                        WKInterfaceDevice.current().play(.stop)
+                        if (useSound) {
+                            WKInterfaceDevice.current().play(.stop)
+                            WKInterfaceDevice.current().play(.stop)
+                        } else {
+                            WKInterfaceDevice.current().play(.click)
+                            WKInterfaceDevice.current().play(.click)
+                        }
                     }
                     
                 }//end else run time evaluation block. 
