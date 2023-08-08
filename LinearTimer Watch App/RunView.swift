@@ -131,6 +131,7 @@ struct RunView: View {
          }else
          {
              running = true
+             modeColor = .green
              CurrentLabel = "Starting in... \(startLag)"
              //        stopTime =  timer.connect() as! Timer
             runTime = 0
