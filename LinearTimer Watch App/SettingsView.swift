@@ -26,60 +26,61 @@ struct SettingsView: View {
     
     var body: some View {
         
-        
-        VStack {
-            
-            Spacer(minLength:5)
-            HStack {
-                Text("Start Lag")
-                Spacer()
-                TextField( "Start Lag", text: $lcl_startLag)
-//                    .fixedSize()
-                    .frame(width: 40)
-                Text("Sec")
-            }
-            Spacer(minLength:5)
-            HStack {
-                Text("Time to Warn")
-                Spacer(minLength:10)
-                TextField( "Time to Warn", text: $lcl_prefinish)
-                   .frame(width: 40)
-
+        ScrollView{
+            VStack {
                 
-                   
-                Text("Sec")
-            }
-//            Spacer(minLength:5)
-            HStack {
-//                Text("Hide Face")
-                Spacer()
-                Toggle( "Hide Face", isOn: $lcl_hideFace)
-                    .accentColor(.accentColor)
-                Spacer(minLength:50)
-                
-                     }
-            Spacer(minLength:15)
-            HStack {
-//                Text("Hide Face")
-                Spacer()
-                Toggle( "Sound", isOn: $lcl_useSound)
-                    .accentColor(.accentColor)
-                Spacer(minLength:50)
-                
-                     }
-            Spacer(minLength:20)
-            HStack{
-//                Button("Cancel", action: cancel)
-                Button ("Save", action:save)
+                Spacer(minLength:5)
+                HStack {
+                    Text("Start Lag")
+                    Spacer()
+                    TextField( "Start Lag", text: $lcl_startLag)
+                    //                    .fixedSize()
+                        .frame(width: 40)
+                    Text("Sec")
+                }
+                Spacer(minLength:5)
+                HStack {
+                    Text("Time to Warn")
+                    Spacer(minLength:10)
+                    TextField( "Time to Warn", text: $lcl_prefinish)
+                        .frame(width: 40)
                     
-                    .accentColor(.accentColor)
-            }.frame(maxWidth: 125, maxHeight: 25)
-        }//end Vstack
-        .onAppear(){
-            lcl_startLag = startLag
-            lcl_prefinish = prefinish
-            lcl_hideFace = hideFace
-            lcl_useSound = useSound
+                    
+                    
+                    Text("Sec")
+                }
+                //            Spacer(minLength:5)
+                HStack {
+                    //                Text("Hide Face")
+                    Spacer()
+                    Toggle( "Hide Face", isOn: $lcl_hideFace)
+                        .accentColor(.accentColor)
+                    Spacer(minLength:50)
+                    
+                }
+                Spacer(minLength:15)
+                HStack {
+                    //                Text("Hide Face")
+                    Spacer()
+                    Toggle( "Sound", isOn: $lcl_useSound)
+                        .accentColor(.accentColor)
+                    Spacer(minLength:50)
+                    
+                }
+                Spacer(minLength:20)
+                HStack{
+                    //                Button("Cancel", action: cancel)
+                    Button ("Save", action:save)
+                    
+                        .accentColor(.accentColor)
+                }.frame(maxWidth: 125, maxHeight: 25)
+            }//end Vstack
+            .onAppear(){
+                lcl_startLag = startLag
+                lcl_prefinish = prefinish
+                lcl_hideFace = hideFace
+                lcl_useSound = useSound
+            }
         }
     }//end body
         
