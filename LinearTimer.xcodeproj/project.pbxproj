@@ -47,8 +47,9 @@
 		8C5B16F12A401127003452D0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		8C5B16F32A401128003452D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8C5B16F62A401128003452D0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		8C5B17012A401B0A003452D0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		8C5B17012A401B0A003452D0 /* SettingsView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; tabWidth = 1; usesTabs = 0; };
 		8C5B17032A402D31003452D0 /* RunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunView.swift; sourceTree = "<group>"; };
+		8CB727502A81F1E9008C21C5 /* LinearTimer-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "LinearTimer-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +83,7 @@
 		8C5B16EE2A401127003452D0 /* LinearTimer Watch App */ = {
 			isa = PBXGroup;
 			children = (
+				8CB727502A81F1E9008C21C5 /* LinearTimer-Watch-App-Info.plist */,
 				8C5B16EF2A401127003452D0 /* LinearTimerApp.swift */,
 				8C5B16F12A401127003452D0 /* ContentView.swift */,
 				8C5B17012A401B0A003452D0 /* SettingsView.swift */,
@@ -336,6 +338,7 @@
 				DEVELOPMENT_TEAM = 5Z5MRXHAZE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LinearTimer-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LinearTimer;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
@@ -366,6 +369,7 @@
 				DEVELOPMENT_TEAM = 5Z5MRXHAZE;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "LinearTimer-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = LinearTimer;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;

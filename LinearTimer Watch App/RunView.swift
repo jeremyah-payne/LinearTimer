@@ -24,7 +24,7 @@ struct RunView: View {
     @State var modeColor:Color = .green
     /*this timer will fire every second. do not connect or autoconnet. here as that starts the time
     originally had as a let but using as a var so that way I can reinit the timer without reloading the view*/
-    @State var timer = Timer.publish(every: 1, on: .main, in: .common)
+    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     //monitor if the time is running or not to determine the button state
     @State var running:Bool = false
     //unsued, mutability breaks view... still not sure how to handle cancleable... see below
@@ -52,65 +52,68 @@ struct RunView: View {
             .foregroundColor(modeColor)
             .opacity(buttonOpacity)
             .onReceive(timer)  { time in
-                //compare the timer to the count down first., only evalute  runtime after counter is  done
-                if countDownTime < lagInt {
-                    countDownTime = countDownTime + 1
-                    CurrentLabel = "Starting in... \(lagInt - countDownTime)"
-                    if countDownTime == lagInt {
-                        // do haptic feedback, I'm thinking of making this a system pref based on beta tester feedback and personal testing. i.e pref = .click || pref = .start then play(pref)
-                        if(useSound) {
-                            WKInterfaceDevice.current().play(.start)
-                        }else {
+                if running {
+                    //compare the timer to the count down first., only evalute  runtime after counter is  done
+                    if countDownTime < lagInt {
+                        countDownTime = countDownTime + 1
+                        CurrentLabel = "Starting in... \(lagInt - countDownTime)"
+                        if countDownTime == lagInt {
+                            // do haptic feedback, I'm thinking of making this a system pref based on beta tester feedback and personal testing. i.e pref = .click || pref = .start then play(pref)
+                            if(useSound) {
+                                WKInterfaceDevice.current().play(.start)
+                            }else {
+                                WKInterfaceDevice.current().play(.click)
+                            }
+                            //check if hideface then set opacity or some var
+                            if hideFace {
+                                //change opactity
+                                buttonOpacity = 0.0
+                            }
+                        }
+                    } else { //evalute the runtime block
+                        runTime = runTime + 1
+                        //click on the minute markers, might need this as a preferences, .et the user speak
+                        if( runTime % 60 == 0 && runTime != inputTime) {
                             WKInterfaceDevice.current().play(.click)
                         }
-                        //check if hideface then set opacity or some var
-                        if hideFace {
-                            //change opactity
-                            buttonOpacity = 0.0
+                        //reformat the time form counting seconds to clokc minute sec format
+                        if(runTime >= 60) {
+                            CurrentLabel = String(format: "%d:%.2d", (runTime/60),(runTime%60))
+                        }else // leave in seconds
+                        {
+                            CurrentLabel = String(runTime)
                         }
-                    }
-                } else { //evalute the runtime block
-                    runTime = runTime + 1
-                    //click on the minute markers, might need this as a preferences, .et the user speak
-                    if( runTime % 60 == 0 && runTime != inputTime) {
-                        WKInterfaceDevice.current().play(.click)
-                    }
-                    //reformat the time form counting seconds to clokc minute sec format
-                    if(runTime >= 60) {
-                        CurrentLabel = String(format: "%d:%.2d", (runTime/60),(runTime%60))
-                    }else // leave in seconds
-                    {
-                        CurrentLabel = String(runTime)
-                    }
-                    //check if it is time for the warning yet based on the system preference
-                    if runTime == (inputTime - (Int (prefinish) ?? 15)) {
-                        //warn the user with double haptic touch
-                        //set the watch face to yellow to warn
-                        modeColor = .yellow
-                        if (useSound) {
-                            WKInterfaceDevice.current().play(.stop)
-                        } else {
-                            WKInterfaceDevice.current().play(.click)
+                        //check if it is time for the warning yet based on the system preference
+                        if runTime == (inputTime - (Int (prefinish) ?? 15)) {
+                            //warn the user with double haptic touch
+                            //set the watch face to yellow to warn
+                            modeColor = .yellow
+                            if (useSound) {
+                                WKInterfaceDevice.current().play(.stop)
+                            } else {
+                                WKInterfaceDevice.current().play(.click)
+                            }
                         }
-                    }
-                    //if the run time is over the input then we are in the grace period and need to let the user know.
-                    if runTime >= inputTime {
-                        //set the watch face to yellow to warn
-                        buttonOpacity = 100.0
-                        modeColor = .red
-                        if (useSound) {
-                            WKInterfaceDevice.current().play(.stop)
-                            WKInterfaceDevice.current().play(.stop)
-                        } else {
-                            WKInterfaceDevice.current().play(.click)
-                            WKInterfaceDevice.current().play(.click)
+                        //if the run time is over the input then we are in the grace period and need to let the user know.
+                        if runTime >= inputTime {
+                            //set the watch face to yellow to warn
+                            buttonOpacity = 100.0
+                            modeColor = .red
+                            if (useSound) {
+                                WKInterfaceDevice.current().play(.stop)
+                                WKInterfaceDevice.current().play(.stop)
+                            } else {
+                                WKInterfaceDevice.current().play(.click)
+                                WKInterfaceDevice.current().play(.click)
+                            }
                         }
+                        
+                    }//end else run time evaluation block. 
+                    if ( runTime == ( inputTime + 10)) {
+                        //final warning!
+                        //timer.connect().cancel()
+                        running = false 
                     }
-                    
-                }//end else run time evaluation block. 
-                if ( runTime == ( inputTime + 10)) {
-                    //final warning!
-                    timer.connect().cancel()
                 }
             }// End on Receive 
     }
@@ -121,7 +124,7 @@ struct RunView: View {
          if running {
             //
              buttonOpacity = 100.0
-             timer.connect().cancel()
+            // timer.connect().cancel()
              running = false 
              CurrentLabel = "Start"
              modeColor = .green
@@ -132,11 +135,7 @@ struct RunView: View {
              //        stopTime =  timer.connect() as! Timer
             runTime = 0
              countDownTime = 0 
-             timer = Timer.publish(every: 1, on: .main, in: .common)
-             /* so I still have more to learn about timers etc. but it wants to assign cancleable
-             now in the examples i have seen, the autoconnect used also starts the timer immmediatly, which I don't want. So for now a warning on an unsed variable, and 
-              also not sure how this responds to interuption events since it is on the main thread. Hope the user has the watch on DND. lol */
-             timer.connect()
+             
          }
     }
 }
