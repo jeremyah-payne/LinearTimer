@@ -34,7 +34,7 @@ struct RunView: View {
     @AppStorage("startLag") var startLag:String = "5"
     @AppStorage("prefinishTime") var prefinish:String = "15"
     @AppStorage("hideFace") var hideFace:Bool = false
-    @AppStorage("hideFace") var useSound:Bool = false
+    @AppStorage("useSound") var useSound:Bool = false
     
     
     var body: some View {

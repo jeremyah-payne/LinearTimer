@@ -12,7 +12,7 @@ struct SettingsView: View {
     @AppStorage("startLag") var startLag:String = "5"
     @AppStorage("prefinishTime") var prefinish:String = "15"
     @AppStorage("hideFace") var hideFace:Bool = true
-    @AppStorage("hideFace") var useSound:Bool = true
+    @AppStorage("useSound") var useSound:Bool = true
     
     
     //creating local variables vs the system variables. soon as the systems ones are changed they save. This lets me cancel and only write the locals to the system when the save button is clicked. 
