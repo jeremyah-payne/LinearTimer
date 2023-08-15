@@ -15,34 +15,39 @@ struct RunView: View {
     //monitor if the time is running or not to determine the button state
     @State var running:Bool = false
     @StateObject var timeVM:TimerVM  = TimerVM()
-      
+    
     var body: some View {
         
         //FYI, in Swift UI .XYZ following an object essentialy appends functinality
         Button(timeVM.CurrentLabel, action:toggleTimer )
             .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity
-                )
+                maxWidth: .infinity,
+                maxHeight: .infinity
+            )
             .foregroundColor(timeVM.modeColor
-)
+            )
             .opacity(timeVM.buttonOpacity)
     }
     
-     func toggleTimer() -> Void {
+    func toggleTimer() -> Void {
         
-         if running {
+        if running {
             //
-             running = false 
-             timeVM.stopTimer()
-         }else
-         {
-             timeVM.resetTimer(input:inputTime)
-             running = true
-             
-         }
+            running = false 
+            timeVM.stopTimer()
+        }else
+        {
+            timeVM.resetTimer(input:inputTime)
+            running = true
+            
+        }
+    }//end toggletimw 
+    
+    func onDisappear() {
+        print("Good Bye")
+        timeVM.stopTimer()
     }
-}
+}//end struct runview 
 
 struct RunView_Previews: PreviewProvider {
     static var previews: some View {

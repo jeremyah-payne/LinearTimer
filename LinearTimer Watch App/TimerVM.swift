@@ -19,10 +19,11 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
     var runTime:Int = 0
     var countDownTime:Int = 0
     
-        
+    
     //monitor if the time is running or not to determine the button state
     var running:Bool = false
     var timer :Timer = Timer()
+    var session:WKExtendedRuntimeSession=WKExtendedRuntimeSession()
     
     
     //Publish these variables to the view
@@ -39,7 +40,7 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
     @AppStorage("useSound") var useSound:Bool = true
     @AppStorage("hideFace") var hideFace:Bool = true
     
-   
+    
     //debug
     var runCount:Int = 0
     
@@ -53,12 +54,13 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
         modeColor = .green
         CurrentLabel = "Starting in... \(startLag)"
         timer = Timer.scheduledTimer(
-                        timeInterval: 1, 
-                        target: self,   
-                        selector: #selector(updateTimeLoop), 
-                        userInfo: nil, 
-                        repeats: true
-                        )
+            timeInterval: 1, 
+            target: self,   
+            selector: #selector(updateTimeLoop), 
+            userInfo: nil, 
+            repeats: true
+        )
+        session.start(at: Date())
     }
     //stop the timer form the timer button
     func stopTimer() {
@@ -67,6 +69,7 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
         CurrentLabel = "Start"
         modeColor = .green
         timer.invalidate()
+        session.invalidate()
     }
     
     //Logic
@@ -86,22 +89,22 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
     }
     func updateCountDown(lagInt:Int) {
         countDownTime += 1
-            CurrentLabel = "Starting in... \(lagInt - countDownTime)"
+        CurrentLabel = "Starting in... \(lagInt - countDownTime)"
         
-            if countDownTime >= lagInt {
-                // do haptic feedback, I'm thinking of making this a system pref based on beta tester feedback and personal testing. i.e pref = .click || pref = .start then play(pref)
-                if(useSound) {
-                    WKInterfaceDevice.current().play(.start)
-                }else {
-                    WKInterfaceDevice.current().play(.click)
-                }
-                //check if hideface then set opacity or some var
-                if hideFace {
-                    //change opactity
-                    buttonOpacity = 0.0
-                }   
+        if countDownTime >= lagInt {
+            // do haptic feedback, I'm thinking of making this a system pref based on beta tester feedback and personal testing. i.e pref = .click || pref = .start then play(pref)
+            if(useSound) {
+                WKInterfaceDevice.current().play(.start)
+            }else {
+                WKInterfaceDevice.current().play(.click)
             }
+            //check if hideface then set opacity or some var
+            if hideFace {
+                //change opactity
+                buttonOpacity = 0.0
+            }   
         }
+    }
     
     func updateRuntime() {
         runTime = runTime + 1
@@ -129,6 +132,7 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
         }
         //if the run time is over the input then we are in the grace period and need to let the user know.
         if runTime >= inputTime {
+            session.notifyUser(hapticType: .click)
             //set the watch face to yellow to warn
             //buttonOpacity = 100.0
             modeColor = .red
@@ -151,16 +155,17 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
     
     // Bakcground Delegate Session methods.
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
-//start stuff??
+        //no idea  stuff?? LOL lord... 
         
     }
     
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        //MId Stuff
+        //MId Stuff, nothing needed for session start really, givine that we only start the session from user input or am I wrong?
+        
     }
     
     func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
-        //EXPIRE STUFF
+        stopTimer()
     }
     
     
