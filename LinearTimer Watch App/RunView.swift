@@ -44,6 +44,7 @@ struct RunView: View {
     }//end toggletimw 
     
     func onDisappear() {
+        //XXXon dissapear is not called the way I thought. We need this to clean up from running timers or we get multiple VMS!!!! REDFROG!
         print("Good Bye")
         timeVM.stopTimer()
     }

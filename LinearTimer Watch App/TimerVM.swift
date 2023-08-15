@@ -75,7 +75,6 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
     //Logic
     @objc func updateTimeLoop() {
         runCount+=1
-        print("run loop: \(runCount)")
         guard running else  {
             return
         }
@@ -148,8 +147,7 @@ class TimerVM:NSObject,ObservableObject, WKExtendedRuntimeSessionDelegate  {
         
         if ( runTime == ( inputTime + 10)) {
             //final warning!
-            timer.invalidate()
-            running = false 
+            stopTimer()
         }
     }
     
